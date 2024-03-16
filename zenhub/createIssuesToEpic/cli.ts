@@ -38,7 +38,7 @@ function composeResult(result: Output): string {
   const headline = `${result.createdIssue.length} issues created.`;
   const issues = joinToString(
     result.createdIssue,
-    (issue) => `* #${issue.content.number} ${issue.content.title}`,
+    (issue) => `* [${issue.content.title} #${issue.content.number}](${issue.content.url})`,
     { separator: "\n" },
   );
   return `${headline}
