@@ -1,0 +1,23 @@
+name: Create issues adding to epic
+
+on:
+    workflow_dispatch:
+
+jobs:
+    main:
+        name: main
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: setup-deno
+              uses: denoland/setup-deno@v1
+              with:
+                  deno-version: v1.x
+            - name: run
+              run: |
+                  deno run --allow-read --allow-env zenhub/createIssuesToEpic/cli.ts \
+                  --epic-url "https://app.zenhub.com/workspaces/engineering-team-65f4e509559182013efc0fa2/epics/Z2lkOi8vcmFwdG9yL1plbmh1YkVwaWMvMTg0ODM5?state=OPEN&state=TODO&state=IN_PROGRESS" \
+                  --config zenhub/createIssuesToEpic/config.json
+              env:
+                  ZENHUB_API_TOKEN: ${{ secrets.ZENHUB_API_TOKEN }}
+                  ZENHUB_WORKSPACE_ID: 65f4e509559182013efc0fa2

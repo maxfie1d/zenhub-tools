@@ -1,0 +1,16 @@
+{
+  "issues": [
+    {
+      "title": "[Android] {EPIC_TITLE}",
+      "body": "Issue body {EPIC_BODY} #{EPIC_NUMBER}",
+      "labels": ["Android"],
+      "estimate": 3
+    },
+    {
+      "title": "[iOS] {EPIC_TITLE}",
+      "body": "Issue body",
+      "labels": ["iOS"],
+      "estimate": 3
+    }
+  ]
+}
