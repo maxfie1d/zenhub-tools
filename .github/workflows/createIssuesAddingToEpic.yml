@@ -21,7 +21,7 @@ jobs:
             - name: run
               run: |
                   deno run --allow-read --allow-env --allow-net zenhub/createIssuesToEpic/cli.ts \
-                  --epic-url ${{ inputs.epicUrl }} \
+                  --epic-url "${{ inputs.epicUrl }}" \
                   --config zenhub/createIssuesToEpic/config.json >> $GITHUB_STEP_SUMMARY
               env:
                   ZENHUB_API_TOKEN: ${{ secrets.ZENHUB_API_TOKEN }}
