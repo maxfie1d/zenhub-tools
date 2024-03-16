@@ -13,8 +13,8 @@ const flags = parseArgs(Deno.args, {
 
 const configPath = flags.config;
 const epicUrl = flags["epic-url"];
-const token = flags.token ?? env["ZENHUB_API_TOKEN"];
-const workspaceId = flags["workspace-id"] ?? env["ZENHUB_WORKSPACE_ID"];
+const token = flags.token ?? env["ZENHUB_API_TOKEN"] ?? Deno.env.get("ZENHUB_API_TOKEN");
+const workspaceId = flags["workspace-id"] ?? env["ZENHUB_WORKSPACE_ID"] ?? Deno.env.get("ZENHUB_WORKSPACE_ID"); 
 
 if (!configPath) throw "config undefined";
 if (!epicUrl) throw "epicUrl undefined";
