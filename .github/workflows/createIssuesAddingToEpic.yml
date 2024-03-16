@@ -15,7 +15,7 @@ jobs:
                   deno-version: v1.x
             - name: run
               run: |
-                  deno run --allow-read --allow-env zenhub/createIssuesToEpic/cli.ts \
+                  deno run --allow-read --allow-env --allow-net zenhub/createIssuesToEpic/cli.ts \
                   --epic-url "https://app.zenhub.com/workspaces/engineering-team-65f4e509559182013efc0fa2/epics/Z2lkOi8vcmFwdG9yL1plbmh1YkVwaWMvMTg0ODM5?state=OPEN&state=TODO&state=IN_PROGRESS" \
                   --config zenhub/createIssuesToEpic/config.json
               env:
