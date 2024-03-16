@@ -97,7 +97,7 @@ export class ZenHub {
           repositoryId: workspace.repositoryId,
           title: input.title,
           body: input.body,
-          labels: input.labels
+          labels: input.labels,
         },
       },
     );
@@ -115,7 +115,8 @@ export class ZenHub {
   }
 
   async setEstimate(issueId: string, estimate: number) {
-    const res = await this.client.post(`
+    const res = await this.client.post(
+      `
     mutation SetEstimate($input: SetEstimateInput!) {
       setEstimate(input: $input) {
           issue {
@@ -125,28 +126,32 @@ export class ZenHub {
           }
       }
   }
-    `, {
-      input: {
-        issueId,
-        value: estimate
-      }
-    })
-
+    `,
+      {
+        input: {
+          issueId,
+          value: estimate,
+        },
+      },
+    );
   }
 
   async addIssueToZenhubEpic(issueId: string, zenhubEpicId: string) {
-    const res = await this.client.post(`
+    const res = await this.client.post(
+      `
     mutation AddIssuesToZenhubEpics($input: AddIssuesToZenhubEpicsInput!) {
       addIssuesToZenhubEpics(input: $input) {
           clientMutationId
       }
   }
-    `, {
-      input: {
-        issueIds: [issueId],
-        zenhubEpicIds: [zenhubEpicId]
-      }
-    })
+    `,
+      {
+        input: {
+          issueIds: [issueId],
+          zenhubEpicIds: [zenhubEpicId],
+        },
+      },
+    );
   }
 }
 

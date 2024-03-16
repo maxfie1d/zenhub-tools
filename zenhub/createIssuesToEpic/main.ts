@@ -3,7 +3,7 @@ import { ZenHub } from "../zenhub.ts";
 
 export async function main(input: Input): Promise<Output> {
   const zenhub = new ZenHub(input.token, input.workspaceId);
-  
+
   // url のhostを見て使うapiを分ける必要がある
   // github actions から呼び出すようにする
 
@@ -15,19 +15,19 @@ export async function main(input: Input): Promise<Output> {
     input.config.issues.map(async (issueConfig) => {
       const variables: VariableReplacement[] = [
         { key: "{EPIC_TITLE}", value: epic.content.title },
-        { key: "{EPIC_BODY}", value: epic.content.body},
-        { key: "{EPIC_NUMBER}", value: epic.content.number.toString()},
+        { key: "{EPIC_BODY}", value: epic.content.body },
+        { key: "{EPIC_NUMBER}", value: epic.content.number.toString() },
       ];
       const issue = await zenhub.createIssue(
         workspace,
         {
           title: embedVariable(issueConfig.title, variables),
           body: embedVariable(issueConfig.body, variables),
-          labels: issueConfig.labels
+          labels: issueConfig.labels,
         },
       );
       await zenhub.setEstimate(issue.id, issueConfig.estimate);
-      
+
       // ここ
       await zenhub.addIssueToZenhubEpic(issue.id, epic.id);
       return issue;
