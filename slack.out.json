@@ -21,12 +21,12 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*Issue*\n<https://github.com/gh0316tech/zenhub-issues/issues/25|[Android] first epic #25>",
+          "text": "*Issue*\n<https://github.com/gh0316tech/zenhub-issues/issues/27|[Android] first epic #27>",
           "verbatim": true
         },
         {
           "type": "mrkdwn",
-          "text": "*Estimate*\n0",
+          "text": "*Estimate*\n3",
           "verbatim": true
         }
       ]
@@ -36,12 +36,12 @@
       "fields": [
         {
           "type": "mrkdwn",
-          "text": "*Issue*\n<https://github.com/gh0316tech/zenhub-issues/issues/24|[iOS] first epic #24>",
+          "text": "*Issue*\n<https://github.com/gh0316tech/zenhub-issues/issues/26|[iOS] first epic #26>",
           "verbatim": true
         },
         {
           "type": "mrkdwn",
-          "text": "*Estimate*\n0",
+          "text": "*Estimate*\n3",
           "verbatim": true
         }
       ]

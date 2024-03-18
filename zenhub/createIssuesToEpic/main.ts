@@ -29,7 +29,9 @@ export async function main(input: Input): Promise<Output> {
           labels: issueConfig.labels,
         },
       );
+
       await zenhub.setEstimate(issue.id, issueConfig.estimate);
+      issue.estimate = issueConfig.estimate
 
       if (isGithubEpic) {
         await zenhub.addIssueToGithubEpic(issue.id, epic.id);
