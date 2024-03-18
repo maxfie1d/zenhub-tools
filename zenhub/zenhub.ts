@@ -72,7 +72,7 @@ export class ZenHub {
         `,
       {
         repositoryId: workspace.repositoryId,
-        issueNumber: issueNumber,
+        issueNumber: parseInt(issueNumber),
       },
     );
     
