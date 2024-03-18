@@ -145,6 +145,8 @@ export class ZenHub {
       },
     );
 
+    console.log(res);
+
     return {
       id: res.data.createIssue.issue.id,
       content: {
@@ -216,6 +218,8 @@ export class ZenHub {
         },
       },
     );
+
+    console.log(res);
   }
 }
 
