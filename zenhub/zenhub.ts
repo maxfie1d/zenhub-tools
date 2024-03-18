@@ -43,7 +43,10 @@ export class ZenHub {
     };
   }
 
-  async fetchGithubEpic(workspace: ZenhubWorkspace, url: string): Promise<GithubEpic> {
+  async fetchGithubEpic(
+    workspace: ZenhubWorkspace,
+    url: string,
+  ): Promise<GithubEpic> {
     const u = new URL(url);
     const parts = u.pathname.split("/");
     const issueNumber = parts[parts.length - 1];
@@ -66,7 +69,7 @@ export class ZenHub {
         `,
       {
         repositoryId: workspace.repositoryId,
-        issueNumber: issueNumber
+        issueNumber: issueNumber,
       },
     );
 
@@ -203,8 +206,8 @@ export class ZenHub {
         input: {
           input: {
             issueIds: [issueId],
-            epicIds: [githubEpicId]
-          }
+            epicIds: [githubEpicId],
+          },
         },
       },
     );

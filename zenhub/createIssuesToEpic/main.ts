@@ -1,8 +1,5 @@
 import { Input, Output } from "./input.ts";
 import { ZenHub } from "../zenhub.ts";
-import {
-  URL,
-} from "https://esm.sh/v135/@types/node@18.16.19/url.d.ts";
 
 const zenhubHost = "app.zenhub.com";
 const githubHost = "github.com";
