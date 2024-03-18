@@ -67,6 +67,9 @@ export class ZenHub {
             body
             htmlUrl
             number
+            epic {
+              id
+            }
         }
       }
         `,
@@ -79,7 +82,7 @@ export class ZenHub {
     console.log(res);
 
     return {
-      id: res.data.issueByInfo.id,
+      id: res.data.issueByInfo.epic.id,
       content: {
         title: res.data.issueByInfo.title,
         body: res.data.issueByInfo.body,
@@ -206,8 +209,7 @@ export class ZenHub {
         addIssuesToEpics(input: $input) {
             clientMutationId
         }
-    }
-  }
+      }
     `,
       {
         input: {
