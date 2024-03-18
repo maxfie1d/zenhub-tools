@@ -1,15 +1,21 @@
 import { Input, Output } from "./input.ts";
 import { ZenHub } from "../zenhub.ts";
+import {
+  URL,
+} from "https://esm.sh/v135/@types/node@18.16.19/url.d.ts";
+
+const zenhubHost = "app.zenhub.com";
+const githubHost = "github.com";
 
 export async function main(input: Input): Promise<Output> {
   const zenhub = new ZenHub(input.token, input.workspaceId);
-
-  // url のhostを見て使うapiを分ける必要がある
-  // github actions から呼び出すようにする
-
-  // ここ
-  const epic = await zenhub.fetchZenhubEpic(input.epicUrl);
   const workspace = await zenhub.fetchWorkspace();
+
+  const isGithubEpic = new URL(input.epicUrl).hostname == githubHost;
+
+  const epic = isGithubEpic
+    ? await zenhub.fetchGithubEpic(workspace, input.epicUrl)
+    : await zenhub.fetchZenhubEpic(input.epicUrl);
 
   const issues = await Promise.all(
     input.config.issues.map(async (issueConfig) => {
@@ -28,8 +34,11 @@ export async function main(input: Input): Promise<Output> {
       );
       await zenhub.setEstimate(issue.id, issueConfig.estimate);
 
-      // ここ
-      await zenhub.addIssueToZenhubEpic(issue.id, epic.id);
+      if (isGithubEpic) {
+        await zenhub.addIssueToGithubEpic(issue.id, epic.id);
+      } else {
+        await zenhub.addIssueToZenhubEpic(issue.id, epic.id);
+      }
       return issue;
     }),
   );

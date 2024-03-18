@@ -43,6 +43,44 @@ export class ZenHub {
     };
   }
 
+  async fetchGithubEpic(workspace: ZenhubWorkspace, url: string): Promise<GithubEpic> {
+    const u = new URL(url);
+    const parts = u.pathname.split("/");
+    const issueNumber = parts[parts.length - 1];
+
+    const res = await this.client.post(
+      `
+      query ($repositoryId: ID, $issueNumber: Int!) {
+        issueByInfo(
+            repositoryGhId: $repositoryGhId
+            repositoryId: $repositoryId
+            issueNumber: $issueNumber
+        ) {
+            id
+            title
+            body
+            htmlUrl
+            number
+        }
+    }
+        `,
+      {
+        repositoryId: workspace.repositoryId,
+        issueNumber: issueNumber
+      },
+    );
+
+    return {
+      id: res.data.issueByInfo.id,
+      content: {
+        title: res.data.issuesByInfo.title,
+        body: res.data.issuesByInfo.body,
+        number: res.data.issueByInfo.number,
+        url: res.data.issueByInfo.htmlUrl,
+      },
+    };
+  }
+
   async fetchWorkspace(): Promise<ZenhubWorkspace> {
     const res = await this.client.post(
       `
@@ -71,9 +109,6 @@ export class ZenHub {
     workspace: ZenhubWorkspace,
     input: CreateIssueInput,
   ): Promise<Issue> {
-    // Issueを作る
-    // workspace id は知っているものとする
-    // まずworkspaceを取得してrepository idを取得する必要がある
     const res = await this.client.post(
       `
     mutation CreateIssue($input: CreateIssueInput!) {
@@ -149,6 +184,27 @@ export class ZenHub {
         input: {
           issueIds: [issueId],
           zenhubEpicIds: [zenhubEpicId],
+        },
+      },
+    );
+  }
+
+  async addIssueToGithubEpic(issueId: string, githubEpicId: string) {
+    const res = await this.client.post(
+      `
+      mutation AddIssuesToEpics($input: AddIssuesToEpicsInput!) {
+        addIssuesToEpics(input: $input) {
+            clientMutationId
+        }
+    }
+  }
+    `,
+      {
+        input: {
+          input: {
+            issueIds: [issueId],
+            epicIds: [githubEpicId]
+          }
         },
       },
     );
