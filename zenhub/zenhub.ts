@@ -51,11 +51,14 @@ export class ZenHub {
     const parts = u.pathname.split("/");
     const issueNumber = parts[parts.length - 1];
 
+    console.log(issueNumber);
+    console.log(workspace.repositoryId);
+    
+    
     const res = await this.client.post(
       `
       query ($repositoryId: ID, $issueNumber: Int!) {
         issueByInfo(
-            repositoryGhId: $repositoryGhId
             repositoryId: $repositoryId
             issueNumber: $issueNumber
         ) {
@@ -65,19 +68,21 @@ export class ZenHub {
             htmlUrl
             number
         }
-    }
+      }
         `,
       {
         repositoryId: workspace.repositoryId,
         issueNumber: issueNumber,
       },
     );
+    
+    console.log(res);
 
     return {
       id: res.data.issueByInfo.id,
       content: {
-        title: res.data.issuesByInfo.title,
-        body: res.data.issuesByInfo.body,
+        title: res.data.issueByInfo.title,
+        body: res.data.issueByInfo.body,
         number: res.data.issueByInfo.number,
         url: res.data.issueByInfo.htmlUrl,
       },
