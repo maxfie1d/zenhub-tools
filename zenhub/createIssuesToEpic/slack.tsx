@@ -2,13 +2,16 @@
 import { Blocks, Divider, Field, Header, Section } from "npm:jsx-slack@6";
 import { Output } from "./input.ts";
 
-export const buildBlocks = (output: Output) => (
+const buildBlocks = (output: Output) => (
   <Blocks>
     <Header>
       {output.createdIssue.length} issue(s) created!
     </Header>
     <Section>
-        Epic: <a href={output.epic.url}>{output.epic.title} #{output.epic.number??""}</a>
+      Epic:{" "}
+      <a href={output.epic.url}>
+        {output.epic.title} #{output.epic.number ?? ""}
+      </a>
     </Section>
     {output.createdIssue.map((issue) => (
       <Section>
@@ -16,8 +19,8 @@ export const buildBlocks = (output: Output) => (
           <b>Issue</b>
           <br />
           <a href={issue.content.url}>
-              {issue.content.title} #{issue.content.number}
-            </a>
+            {issue.content.title} #{issue.content.number}
+          </a>
         </Field>
         <Field>
           <b>Estimate</b>
@@ -28,6 +31,16 @@ export const buildBlocks = (output: Output) => (
     ))}
   </Blocks>
 );
+
+export function outSlackBlock(output: Output): string {
+  return JSON.stringify(
+    {
+      blocks: buildBlocks(output),
+    },
+    null,
+    2,
+  );
+}
 
 const output: Output = {
   epic: {
@@ -59,12 +72,3 @@ const output: Output = {
     },
   ],
 };
-console.log(
-  JSON.stringify(
-    {
-      blocks: buildBlocks(output),
-    },
-    null,
-    2,
-  ),
-);
