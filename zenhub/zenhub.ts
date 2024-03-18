@@ -213,10 +213,8 @@ export class ZenHub {
     `,
       {
         input: {
-          input: {
-            issueIds: [issueId],
-            epicIds: [githubEpicId],
-          },
+          issueIds: [issueId],
+          epicIds: [githubEpicId],
         },
       },
     );
