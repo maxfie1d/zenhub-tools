@@ -53,8 +53,7 @@ export class ZenHub {
 
     console.log(issueNumber);
     console.log(workspace.repositoryId);
-    
-    
+
     const res = await this.client.post(
       `
       query ($repositoryId: ID, $issueNumber: Int!) {
@@ -78,7 +77,7 @@ export class ZenHub {
         issueNumber: parseInt(issueNumber),
       },
     );
-    
+
     console.log(res);
 
     return {
