@@ -1,1 +1,1 @@
-deno run --allow-all ./zenhub/watchPipelines/cli.ts 
+deno run --allow-all ./zenhub/watchPipelines/cli.ts  --out output.json
