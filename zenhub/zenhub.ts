@@ -53,8 +53,7 @@ export class ZenHub {
 
     console.log(issueNumber);
     console.log(workspace.repositoryId);
-    
-    
+
     const res = await this.client.post(
       `
       query ($repositoryId: ID, $issueNumber: Int!) {
@@ -78,7 +77,7 @@ export class ZenHub {
         issueNumber: parseInt(issueNumber),
       },
     );
-    
+
     console.log(res);
 
     return {
@@ -97,6 +96,12 @@ export class ZenHub {
       `
     query ($workspaceId: ID!) {
       workspace(id: $workspaceId) {
+        id
+        displayName
+        pipelines {
+            id
+            name
+        }
         repositoriesConnection {
           nodes {
             name
@@ -111,8 +116,12 @@ export class ZenHub {
       },
     );
 
+    const workspace = res.data.workspace;
     return {
-      repositoryId: res.data.workspace.repositoriesConnection.nodes[0].id,
+      id: workspace.id,
+      displayName: workspace.displayName,
+      pipelines: workspace.pipelines as ZenhubPipeline[],
+      repositoryId: workspace.repositoriesConnection.nodes[0].id,
     };
   }
 
@@ -221,6 +230,28 @@ export class ZenHub {
 
     console.log(res);
   }
+
+  async searchIssuesByPipeline(
+    pipelineId: string,
+  ): Promise<SearchIssuesByPipelineResult> {
+    const res = await this.client.post(
+      `query SearchIssuesByPipeline($pipelineId: ID!) {
+    searchIssuesByPipeline(pipelineId: $pipelineId, filters: {}) {
+        sumEstimates
+        totalCount
+    }
+  }
+`,
+      {
+        pipelineId,
+      },
+    );
+
+    return {
+      sumEstimates: res.data.searchIssuesByPipeline.sumEstimates,
+      totalCount: res.data.searchIssuesByPipeline.totalCount,
+    };
+  }
 }
 
 export type CreateIssueInput = {
@@ -241,7 +272,15 @@ export type ZenhubEpic = {
 };
 
 export type ZenhubWorkspace = {
+  id: string;
+  displayName: string;
+  pipelines: ZenhubPipeline[];
   repositoryId: string;
+};
+
+export type ZenhubPipeline = {
+  id: string;
+  name: string;
 };
 
 export type GithubEpic = {
@@ -254,4 +293,9 @@ export type IssueContent = {
   body: string;
   url: string;
   number: number;
+};
+
+type SearchIssuesByPipelineResult = {
+  sumEstimates: number;
+  totalCount: number;
 };
