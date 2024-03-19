@@ -1,5 +1,4 @@
 import { ZenHubClient } from "./client.ts";
-import * as path from "node:path";
 
 export class ZenHub {
   private client: ZenHubClient;
