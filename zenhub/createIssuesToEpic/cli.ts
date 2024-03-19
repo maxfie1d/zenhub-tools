@@ -4,11 +4,12 @@ import { main } from "./main.ts";
 import { joinToString } from "https://deno.land/std@0.220.1/collections/mod.ts";
 
 import { load } from "https://deno.land/std@0.220.0/dotenv/mod.ts";
+import { outSlackBlock } from "./slack.tsx";
 
 const env = await load();
 
 const flags = parseArgs(Deno.args, {
-  string: ["config", "epic-url", "token", "workspace-id"],
+  string: ["config", "epic-url", "token", "workspace-id", "output-slack-block"],
 });
 
 const configPath = flags.config;
@@ -35,6 +36,12 @@ const input: Input = {
 const result = await main(input);
 
 console.log(composeResult(result));
+
+const outputSlackBlock = flags["output-slack-block"];
+if (outputSlackBlock) {
+  const output = outSlackBlock(result);
+  Deno.writeTextFile(outputSlackBlock, output);
+}
 
 function composeResult(result: Output): string {
   const headline = `${result.createdIssue.length} issues created.`;
